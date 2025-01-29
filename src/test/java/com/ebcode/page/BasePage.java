@@ -1,6 +1,9 @@
 package com.ebcode.page;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.interactions.Actions;
@@ -19,22 +22,29 @@ public class BasePage {
     private static WebDriverWait wait;
     private static Actions action; // instancia - clase de selenium
 
+
     static {
-        // Configuración para Chrome
-//        System.setProperty("webdriver.chrome.driver", "./drivers/win/chromedriver.exe");
-//        ChromeOptions chromeOptions = new ChromeOptions();
-//        chromeOptions.addArguments("--no-sandbox");
-//        chromeOptions.addArguments("--disable-dev-shm-usage");
-//        chromeOptions.addArguments("--remote-allow-origins=*");
-//        driver = new ChromeDriver(chromeOptions);
+        String browser = System.getProperty("browser", "chrome"); // Usa "chrome" como predeterminado
 
-        // Configuración para Firefox
-        System.setProperty("webdriver.gecko.driver", "./drivers/firefox/geckodriver.exe");
-        FirefoxOptions firefoxOptions = new FirefoxOptions();
-        firefoxOptions.addArguments("--no-sandbox");
-        firefoxOptions.addArguments("--disable-dev-shm-usage");
-        driver = new FirefoxDriver(firefoxOptions);
-
+        if (browser.equals("chrome")) {
+            // Configuración para Chrome
+            WebDriverManager.chromedriver().setup();
+            ChromeOptions chromeOptions = new ChromeOptions();
+            chromeOptions.addArguments("--no-sandbox");
+            chromeOptions.addArguments("--disable-dev-shm-usage");
+            chromeOptions.addArguments("--remote-allow-origins=*");
+//            chromeOptions.addArguments("--headless"); // Esta línea habilita el modo sin interfaz gráfica
+            driver = new ChromeDriver(chromeOptions);
+        } else if (browser.equals("firefox")) {
+            // Configuración para Firefox
+            WebDriverManager.firefoxdriver().setup();
+            FirefoxOptions firefoxOptions = new FirefoxOptions();
+            firefoxOptions.addArguments("--no-sandbox");
+            firefoxOptions.addArguments("--disable-dev-shm-usage");
+            driver = new FirefoxDriver(firefoxOptions);
+        } else {
+            throw new IllegalArgumentException("The Browser Type is Undefined" + browser);
+        }
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 

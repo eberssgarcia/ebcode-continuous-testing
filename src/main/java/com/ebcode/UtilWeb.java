@@ -4,13 +4,19 @@ package com.ebcode;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class UtilWeb {
 
-    public static Logger logger(Class clase) {
-        return Logger.getLogger(clase.getName());
+
+    public static Logger logger(Class<?> clazz) {
+        Logger logger = Logger.getLogger(clazz.getName());
+        logger.setLevel(Level.INFO); // Nivel de log predeterminado
+        return logger;
     }
+
+
 //
 //    public static String getValueFromDataTable(DataTable dataTable, String title) {
 //        List<Map<String, String>> data = dataTable.asMaps();
