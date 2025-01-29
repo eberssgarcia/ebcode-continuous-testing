@@ -1,4 +1,4 @@
-# AUTOMATIZACIÓN WEB - [DEMOBLAZE](https://www.demoblaze.com/)
+# AUTOMATIZACIÓN WEB
 
 Este proyecto de automatización para la aplicación web demoblaze esta hecho con las herramientas Selenium Web Driver y
 desarrollado con Java 1.8.
@@ -71,15 +71,24 @@ tests.
             <version>5.9.2</version>
         </dependency>
 
+**✅ Resumen**:
+
+| **Dependencia**    | **Propósito principal**                                                             |
+|--------------------|-------------------------------------------------------------------------------------|
+| `cucumber-java`    | Permite implementar Step Definitions en Java                                        |
+| `cucumber-junit`   | Integra Cucumber con JUnit y permite usar métodos de aserción                       |
+| `selenium-java`    | Proporciona clases para interactuar con navegadores (WebDriver, ChromeDriver, etc.) | 
+| `webdrivermanager` | Administra y descarga automáticamente los binarios de WebDriver                     |
+
 # Tags para ejecución de feature
 
 ##### Para ejecutar los features de web, de manera independiente, utilizar lo siguiente:
 
-| web Feature                              | TAG             |
-|------------------------------------------|-----------------|
-| Ejecución de todos los casos de pruebas. | @test-execution |
-| Ejecutar casos de pruebas agrupados      | @test-group     |
-| Ejecutar casos de pruebas independientes | @test-**        | 
+| web Feature                              | TAG               |
+|------------------------------------------|-------------------|
+| Ejecución de todos los casos de pruebas. | `@test-execution` |
+| Ejecutar casos de pruebas agrupados      | `@test-group`     |
+| Ejecutar casos de pruebas independientes | `@test-**`        | 
 
 # Referencias
 
