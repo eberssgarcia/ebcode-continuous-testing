@@ -1,0 +1,77 @@
+pipeline {
+    agent any
+
+    tools {
+        maven 'maven-3.9.8'
+        jdk 'openjdk-17'
+    }
+
+    options {
+        skipStagesAfterUnstable()  // Evita etapas innecesarias si falla algo
+        timestamps()               // Agrega timestamps al log
+    }
+
+    environment {
+        // Puedes definir variables globales aquí si es necesario
+    }
+
+    stages {
+        stage('Clean Workspace') {
+            steps {
+                echo '🧹 Limpiando el directorio de trabajo...'
+                cleanWs notFailBuild: true
+            }
+        }
+
+        stage('Checkout') {
+            steps {
+                echo '🔄 Haciendo checkout del repositorio...'
+                checkout scmGit(
+                    branches: [[name: '*/develop']],
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/eberssgarcia/ebcode-continuous-testing.git'
+                    ]]
+                )
+            }
+        }
+
+        stage('Restore Packages') {
+            steps {
+                echo '📦 Restaurando paquetes (si aplica)...'
+                // Aquí puedes colocar comandos para dependencias si usas otro gestor
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo '🏗️ Compilando el proyecto...'
+                sh 'mvn clean compile'
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                echo '🧪 Ejecutando pruebas...'
+                sh 'mvn test -Dcucumber.options="--tags @freerangetesters-02"'
+            }
+        }
+
+        stage('Post Cleanup') {
+            steps {
+                echo '🧹 Limpieza post-ejecución (si aplica)...'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '✅ Pipeline completado con éxito.'
+        }
+        failure {
+            echo '❌ Falló el pipeline.'
+        }
+        always {
+            echo '📋 Pipeline finalizado.'
+        }
+    }
+}
