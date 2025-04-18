@@ -7,63 +7,48 @@ pipeline {
     }
 
     options {
-        skipStagesAfterUnstable()  // Evita etapas innecesarias si falla algo
-        timestamps()               // Agrega timestamps al log
+        timestamps()
+        skipStagesAfterUnstable()
     }
 
     stages {
-        stage('Clean Workspace') {
+        stage('🧹 Clean') {
             steps {
-                echo '🧹 Limpiando el directorio de trabajo...'
                 cleanWs notFailBuild: true
+                echo 'Limpiando el workspace...'
             }
         }
 
-        stage('Checkout') {
+        stage('📦 Checkout') {
             steps {
-                echo '🔄 Haciendo checkout del repositorio...'
                 git url: 'https://github.com/eberssgarcia/ebcode-continuous-testing.git', branch: 'develop'
+                echo 'Código clonado correctamente.'
             }
         }
 
-
-        stage('Restore Packages') {
+        stage('🏗️ Build & Test') {
             steps {
-                echo '📦 Restaurando paquetes (si aplica)...'
-                // Aquí puedes colocar comandos para dependencias si usas otro gestor
+                echo 'Compilando y ejecutando pruebas...'
+                sh 'mvn clean test -Dcucumber.options="--tags @freerangetesters-02"'
             }
         }
 
-        stage('Build') {
+        stage('✅ Final Result') {
             steps {
-                echo '🏗️ Compilando el proyecto...'
-                sh 'mvn clean compile'
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                echo '🧪 Ejecutando pruebas...'
-                sh 'mvn test -Dcucumber.options="--tags @freerangetesters-02"'
-            }
-        }
-
-        stage('Post Cleanup') {
-            steps {
-                echo '🧹 Limpieza post-ejecución (si aplica)...'
+                echo 'Pipeline finalizado.'
             }
         }
     }
 
     post {
         success {
-            echo '✅ Pipeline completado con éxito.'
+            echo '✅ ¡Todo OK!'
         }
         failure {
-            echo '❌ Falló el pipeline.'
+            echo '❌ Algo falló 😢'
         }
         always {
-            echo '📋 Pipeline finalizado.'
+            echo '📋 Terminó la ejecución del pipeline.'
         }
     }
 }
