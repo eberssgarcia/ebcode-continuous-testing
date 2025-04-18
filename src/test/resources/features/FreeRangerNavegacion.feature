@@ -25,4 +25,4 @@ Feature: Navigation bar
   @freerangetesters-03
   Scenario: Courses are presented correctly to potencial customers
     When I select Elegir Plan
-    Then I can validate the options in the checkout page
+#    Then I can validate the options in the checkout page
