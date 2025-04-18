@@ -29,7 +29,7 @@ pipeline {
         stage('Build and Test') {
             steps {
                 echo 'Compilando y ejecutando pruebas...'
-                sh 'mvn clean test -Dcucumber.options="--tags @freerangetesters-02"'
+                bat 'mvn clean test -Dcucumber.options="--tags @freerangetesters-02"'
             }
         }
 
@@ -42,13 +42,4 @@ pipeline {
 
     post {
         success {
-            echo '¡Todo OK!'
-        }
-        failure {
-            echo 'Algo falló :('
-        }
-        always {
-            echo 'Terminó la ejecución del pipeline.'
-        }
-    }
-}
+            echo '¡Todo OK
