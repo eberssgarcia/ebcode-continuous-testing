@@ -12,28 +12,28 @@ pipeline {
     }
 
     stages {
-        stage('🧹 Clean') {
+        stage('Clean') {
             steps {
                 cleanWs notFailBuild: true
                 echo 'Limpiando el workspace...'
             }
         }
 
-        stage('📦 Checkout') {
+        stage('Checkout') {
             steps {
                 git url: 'https://github.com/eberssgarcia/ebcode-continuous-testing.git', branch: 'develop'
                 echo 'Código clonado correctamente.'
             }
         }
 
-        stage('🏗️ Build & Test') {
+        stage('Build and Test') {
             steps {
                 echo 'Compilando y ejecutando pruebas...'
                 sh 'mvn clean test -Dcucumber.options="--tags @freerangetesters-02"'
             }
         }
 
-        stage('✅ Final Result') {
+        stage('Final Result') {
             steps {
                 echo 'Pipeline finalizado.'
             }
@@ -42,13 +42,13 @@ pipeline {
 
     post {
         success {
-            echo '✅ ¡Todo OK!'
+            echo '¡Todo OK!'
         }
         failure {
-            echo '❌ Algo falló 😢'
+            echo 'Algo falló :('
         }
         always {
-            echo '📋 Terminó la ejecución del pipeline.'
+            echo 'Terminó la ejecución del pipeline.'
         }
     }
 }
