@@ -32,41 +32,26 @@ pipeline {
                 bat 'mvn clean test -Dcucumber.options="--tags @freerangetesters-02"'
             }
         }
-
-        stage('Final Result') {
-            steps {
-                echo 'Pipeline finalizado.'
-            }
-        }
     }
 
     post {
         success {
             echo '¡Todo OK!'
-            always {
-                  // Always: Este bloque se ejecuta siempre, independientemente del resultado de la construcción
-                  // Genera un reporte de pruebas Karate con la extensión Cucumber
-                  cucumber buildStatus: 'UNCHANGED',
-                    customCssFiles: '',
-                    customJsFiles: '',
-                    failedFeaturesNumber: -1,
-                    failedScenariosNumber: -1,
-                    failedStepsNumber: -1,
-                    fileIncludePattern: '**/*.json',
-                    jsonReportDirectory: 'target/Cucumber-reports',
-                    pendingStepsNumber: -1,
-                    reportTitle: 'Karate Test Execution',
-                    skippedStepsNumber: -1,
-                    sortingMethod: 'ALPHABETICAL',
-                    undefinedStepsNumber: -1
-                }
-
         }
+
         failure {
             echo 'Algo falló :('
         }
+
         always {
             echo 'Terminó la ejecución del pipeline.'
+
+            // Reporte Cucumber
+            cucumber buildStatus: 'UNCHANGED',
+                     fileIncludePattern: '**/cucumber.json',
+                     jsonReportDirectory: 'target/cucumber-reports',
+                     reportTitle: 'Karate Test Execution',
+                     sortingMethod: 'ALPHABETICAL'
         }
     }
 }
