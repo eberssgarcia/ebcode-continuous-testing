@@ -26,12 +26,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo '🔄 Haciendo checkout del repositorio...'
-                checkout scmGit(
-                    branches: [[name: '*/develop']],
-                    userRemoteConfigs: [[
-                        url: 'https://github.com/eberssgarcia/ebcode-continuous-testing.git'
-                    ]]
-                )
+                git: 'https://github.com/eberssgarcia/ebcode-continuous-testing.git'
             }
         }
 
