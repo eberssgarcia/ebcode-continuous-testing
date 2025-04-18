@@ -11,10 +11,6 @@ pipeline {
         timestamps()               // Agrega timestamps al log
     }
 
-    environment {
-        // Puedes definir variables globales aquí si es necesario
-    }
-
     stages {
         stage('Clean Workspace') {
             steps {
